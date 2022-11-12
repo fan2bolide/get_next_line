@@ -6,7 +6,7 @@
 /*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 20:33:00 by bajeanno          #+#    #+#             */
-/*   Updated: 2022/11/12 22:07:10 by bajeanno         ###   ########lyon.fr   */
+/*   Updated: 2022/11/12 22:14:19 by bajeanno         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	static char	buf[BUFFER_SIZE + 1];
 	int			size;
-	static		pos;
+	static int	pos;
 
 	size = 1;
 	buf[BUFFER_SIZE] = 0;
