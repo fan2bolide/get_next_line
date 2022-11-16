@@ -6,7 +6,7 @@
 /*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 20:38:45 by bajeanno          #+#    #+#             */
-/*   Updated: 2022/11/13 03:06:13 by bajeanno         ###   ########lyon.fr   */
+/*   Updated: 2022/11/16 12:51:36 by bajeanno         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,32 @@ int	ft_isset(char c, char const *set)
 	return (0);
 }
 
-char	*ft_strncpy(char *src, char *dest, int n)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	int	i;
+	int		i;
+	char	*dest;
+	char	*source;
 
+	dest = (char *)dst;
+	source = (char *)src;
 	i = 0;
-	while (src[i] && i < n)
+	if (source > dest)
 	{
-		dest[i] = src[i];
-		i++;
+		while (i < (int)len)
+		{
+			dest[i] = source[i];
+			i++;
+		}
 	}
-	dest[i] = 0;
+	else
+	{
+		i = (int)len - 1;
+		while (i >= 0)
+		{
+			dest[i] = source[i];
+			i--;
+		}
+	}
 	return (dest);
 }
 
@@ -68,7 +83,17 @@ char	*ft_realloc(char *str, int size)
 	newstr = malloc(sizeof(char) * size);
 	if (newstr == NULL)
 		return (NULL);
-	ft_strncpy(str, newstr, size);
+	ft_memmove(newstr, str, size);
 	free(str);
 	return (newstr);
+}
+
+char	*ft_strfusion(char const *buf, int *size, char *line, int buf_size)
+{
+	if (buf_size == 0)
+		return (line);
+	*size += buf_size;
+	line = ft_realloc(line, *size);
+	line = ft_strncat(line, buf, buf_size);
+	return (line);
 }

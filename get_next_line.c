@@ -5,51 +5,66 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/11 20:33:00 by bajeanno          #+#    #+#             */
-/*   Updated: 2022/11/14 19:39:22 by bajeanno         ###   ########lyon.fr   */
+/*   Created: 2022/11/16 03:32:06 by bajeanno          #+#    #+#             */
+/*   Updated: 2022/11/16 14:50:06 by bajeanno         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1
-#endif
 
-char	*ft_strfusion(char const *buf, int *size, char *line, int buf_size)
+
+char	*ft_add_buffer(char *buf, char *line, int *size)
 {
-	*size += buf_size;
-	line = ft_realloc(line, *size);
-	line = ft_strncat(line, buf, buf_size);
+	int i;
+
+	i = 0;
+	while (buf[i] > 0 && buf[i] != '\n')
+		i++;
+	if (buf[i] == '\n')
+		i++;
+	line = ft_strfusion(buf, size, line, i);
+	ft_memmove((char *)buf, buf + i + 1, BUFFER_SIZE - i + 1);
+	return (line);
+}
+
+char	*ft_read_buffer(int fd, char *buf, char *line, int size)
+{
+	int bytes_read;
+
+	bytes_read = read(fd, buf, BUFFER_SIZE);
+	while (bytes_read == BUFFER_SIZE && !ft_isset('\n', buf))
+	{
+		line = ft_add_buffer(buf, line, &size);
+		bytes_read = read(fd, buf, BUFFER_SIZE);
+	}
+	if (!ft_isset('\n', buf))
+		buf[BUFFER_SIZE] = EOF;
+	line = ft_add_buffer(buf, line, &size);
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*line;
-	static char	buf[BUFFER_SIZE + 1];
-	int			size;
-	static int	pos = 0;
-	static int	old_fd = 0;
+	static char		buffer[BUFFER_SIZE + 1] = {0};
+	char			*line;
+	int				size;
 
+	if (ft_isset(EOF, buffer))
+		return (NULL);
+	line = malloc(sizeof(char) * 1);
+	*line = 0;
 	size = 1;
-	if (fd != old_fd)
-		pos = 0;
-	buf[BUFFER_SIZE] = 0;
-	line = calloc(sizeof(char), size);
-	line[0] = 0;
-	if (pos == BUFFER_SIZE)
-		pos = 0;
-	if (pos != 0)
-		line = ft_strfusion(buf + pos, &size, line, BUFFER_SIZE - pos);
-	while (read(fd, buf, BUFFER_SIZE) > 0 && !ft_isset('\n', buf))
-		line = ft_strfusion(buf, &size, line, BUFFER_SIZE);
-	while (pos < BUFFER_SIZE && buf[pos] != '\n')
-		pos++;
-	if (pos && pos != BUFFER_SIZE)
-		line = ft_strfusion(buf, &size, line, pos++);
-	return (line);
+	if (buffer[BUFFER_SIZE] == EOF)
+	{
+		free(line);
+		return (NULL);
+	}
+	if (buffer[0])
+	{
+		line = ft_add_buffer((char *)buffer, line, &size);
+		if (ft_isset('\n', line) || ft_isset(EOF, line))
+			return (line);
+	}
+	return (ft_read_buffer(fd, (char *)buffer, line, size));
 }
