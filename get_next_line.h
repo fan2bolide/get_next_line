@@ -6,12 +6,12 @@
 /*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 20:39:11 by bajeanno          #+#    #+#             */
-/*   Updated: 2022/11/16 14:32:47 by bajeanno         ###   ########lyon.fr   */
+/*   Updated: 2022/11/16 15:13:44 by bajeanno         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GNL_H
-# define GNL_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 # include <stdlib.h>
 # include <unistd.h>
 # ifndef BUFFER_SIZE

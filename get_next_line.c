@@ -6,17 +6,15 @@
 /*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 03:32:06 by bajeanno          #+#    #+#             */
-/*   Updated: 2022/11/16 14:50:06 by bajeanno         ###   ########lyon.fr   */
+/*   Updated: 2022/11/16 15:14:49 by bajeanno         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-
-
 char	*ft_add_buffer(char *buf, char *line, int *size)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (buf[i] > 0 && buf[i] != '\n')
@@ -30,7 +28,7 @@ char	*ft_add_buffer(char *buf, char *line, int *size)
 
 char	*ft_read_buffer(int fd, char *buf, char *line, int size)
 {
-	int bytes_read;
+	int	bytes_read;
 
 	bytes_read = read(fd, buf, BUFFER_SIZE);
 	while (bytes_read == BUFFER_SIZE && !ft_isset('\n', buf))
