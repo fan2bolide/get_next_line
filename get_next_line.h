@@ -6,7 +6,7 @@
 /*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 20:39:11 by bajeanno          #+#    #+#             */
-/*   Updated: 2022/11/16 15:13:44 by bajeanno         ###   ########lyon.fr   */
+/*   Updated: 2022/11/16 15:17:39 by bajeanno         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,7 @@ char	*ft_realloc(char *str, int size);
 char	*ft_strncat(char *s1, const char *s2, unsigned int n);
 int		ft_isset(char c, char const *set);
 char	*get_next_line(int fd);
+char	*ft_read_buffer(int fd, char *buf, char *line, int size);
+char	*ft_add_buffer(char *buf, char *line, int *size);
 
 #endif
