@@ -6,7 +6,7 @@
 /*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 20:38:45 by bajeanno          #+#    #+#             */
-/*   Updated: 2022/11/16 12:51:36 by bajeanno         ###   ########lyon.fr   */
+/*   Updated: 2022/11/18 03:08:04 by bajeanno         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,15 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 	return (dest);
 }
 
-char	*ft_strncat(char *s1, const char *s2, unsigned int n)
+char	*ft_strncat(char *s1, const char *s2, size_t n)
 {
-	unsigned int	i;
-	unsigned int	j;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
-	j = 0;
 	while (s1[i])
 		i++;
+	j = 0;
 	while (s2[j] && j < n)
 	{
 		s1[i] = s2[j];
@@ -77,13 +77,17 @@ char	*ft_strncat(char *s1, const char *s2, unsigned int n)
 char	*ft_realloc(char *str, int size)
 {
 	char	*newstr;
+	size_t	len_str;
 
 	if (str == NULL)
 		return (NULL);
 	newstr = malloc(sizeof(char) * size);
 	if (newstr == NULL)
 		return (NULL);
-	ft_memmove(newstr, str, size);
+	len_str = 0;
+	while (str[len_str])
+		len_str++;
+	ft_memmove(newstr, str, len_str + 1);
 	free(str);
 	return (newstr);
 }

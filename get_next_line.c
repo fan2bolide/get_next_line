@@ -6,13 +6,12 @@
 /*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 03:32:06 by bajeanno          #+#    #+#             */
-/*   Updated: 2022/11/18 02:19:59 by bajeanno         ###   ########lyon.fr   */
+/*   Updated: 2022/11/18 04:26:31 by bajeanno         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-
+#include <stdio.h>
 
 static char	*ft_add_buffer(char *buf, char *line, int *size)
 {
@@ -23,8 +22,12 @@ static char	*ft_add_buffer(char *buf, char *line, int *size)
 		i++;
 	if (buf[i] == '\n')
 		i++;
+	// printf("buf : %s\n", buf);
+	// printf("i : %d\n", i);
 	line = ft_strfusion(buf, size, line, i);
-	ft_memmove((char *)buf, buf + i + 1, BUFFER_SIZE - i + 1);
+	ft_memmove((char *)buf, buf + i, BUFFER_SIZE - i + 1);
+	buf[BUFFER_SIZE - i + 1] = 0;
+	// printf("line : %s\n", line);
 	return (line);
 }
 
@@ -36,6 +39,8 @@ static char	*ft_read_buffer(int fd, char *buf, char *line, int size)
 	if (bytes_read < 1)
 	{
 		buf[BUFFER_SIZE] = EOF;
+		if (*line)
+			return (line);
 		free(line);
 		return (NULL);
 	}
@@ -49,7 +54,6 @@ static char	*ft_read_buffer(int fd, char *buf, char *line, int size)
 	line = ft_add_buffer(buf, line, &size);
 	return (line);
 }
-
 char	*get_next_line(int fd)
 {
 	static char		buffer[BUFFER_SIZE + 1] = {0};
@@ -70,10 +74,7 @@ char	*get_next_line(int fd)
 	*line = 0;
 	size = 1;
 	if (buffer[BUFFER_SIZE] == EOF)
-	{
-		free(line);
-		return (NULL);
-	}
+		return (free(line), NULL);
 	if (buffer[0])
 	{
 		line = ft_add_buffer((char *)buffer, line, &size);
