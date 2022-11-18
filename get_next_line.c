@@ -6,7 +6,7 @@
 /*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 03:32:06 by bajeanno          #+#    #+#             */
-/*   Updated: 2022/11/18 08:47:18 by bajeanno         ###   ########lyon.fr   */
+/*   Updated: 2022/11/18 09:12:28 by bajeanno         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ static char	*ft_read_buffer(int fd, char *buf, char *line, int size)
 		line = ft_add_buffer(buf, line, &size);
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 	}
-	if (bytes_read != BUFFER_SIZE && !ft_isset('\n', buf))
-		buf[bytes_read] = EOF;
 	line = ft_add_buffer(buf, line, &size);
 	return (line);
 }
