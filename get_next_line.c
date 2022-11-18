@@ -6,13 +6,15 @@
 /*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 03:32:06 by bajeanno          #+#    #+#             */
-/*   Updated: 2022/11/16 15:14:49 by bajeanno         ###   ########lyon.fr   */
+/*   Updated: 2022/11/18 02:19:59 by bajeanno         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_add_buffer(char *buf, char *line, int *size)
+
+
+static char	*ft_add_buffer(char *buf, char *line, int *size)
 {
 	int	i;
 
@@ -26,11 +28,17 @@ char	*ft_add_buffer(char *buf, char *line, int *size)
 	return (line);
 }
 
-char	*ft_read_buffer(int fd, char *buf, char *line, int size)
+static char	*ft_read_buffer(int fd, char *buf, char *line, int size)
 {
 	int	bytes_read;
 
 	bytes_read = read(fd, buf, BUFFER_SIZE);
+	if (bytes_read < 1)
+	{
+		buf[BUFFER_SIZE] = EOF;
+		free(line);
+		return (NULL);
+	}
 	while (bytes_read == BUFFER_SIZE && !ft_isset('\n', buf))
 	{
 		line = ft_add_buffer(buf, line, &size);
@@ -47,7 +55,15 @@ char	*get_next_line(int fd)
 	static char		buffer[BUFFER_SIZE + 1] = {0};
 	char			*line;
 	int				size;
+	static int		old_fd = -1;
 
+	if (fd >= OPEN_MAX || fd < 0)
+		return (NULL);
+	if (old_fd != fd && old_fd != -1)
+	{
+		buffer[0] = 0;
+		old_fd = fd;
+	}
 	if (ft_isset(EOF, buffer))
 		return (NULL);
 	line = malloc(sizeof(char) * 1);
