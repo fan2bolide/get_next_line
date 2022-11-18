@@ -6,7 +6,7 @@
 /*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 20:39:11 by bajeanno          #+#    #+#             */
-/*   Updated: 2022/11/18 02:59:55 by bajeanno         ###   ########lyon.fr   */
+/*   Updated: 2022/11/18 08:54:51 by bajeanno         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 # include <limits.h>
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
+# endif
+# ifndef OPEN_MAX
+#  define OPEN_MAX 50
 # endif
 # ifndef EOF
 #  define EOF (-1)
