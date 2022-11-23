@@ -6,11 +6,33 @@
 /*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 03:32:06 by bajeanno          #+#    #+#             */
-/*   Updated: 2022/11/18 09:12:28 by bajeanno         ###   ########lyon.fr   */
+/*   Updated: 2022/11/23 17:53:03 by bajeanno         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+static size_t ft_strlen(char *s)
+{
+	size_t i;
+	
+	i =0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+static void    ft_bzero(void *s, size_t n)
+{
+	char    *str;
+
+	str = (char *)s;
+	while (n > 0)
+	{
+			str[n - 1] = 0;
+			n--;
+	}
+}
 
 static char	*ft_add_buffer(char *buf, char *line, int *size)
 {
@@ -58,10 +80,10 @@ char	*get_next_line(int fd)
 	int				size;
 	static int		old_fd = -1;
 
-	if (fd >= OPEN_MAX || fd < 0)
-		return (NULL);
+	if (fd >= OPEN_MAX || fd < 0 || read(fd, NULL, 0) != 0)
+		return (ft_bzero(buffer, ft_strlen(buffer)), NULL);
 	if (old_fd != fd && old_fd != -1)
-		buffer[0] = 0;
+		ft_bzero(buffer, ft_strlen(buffer));
 	old_fd = fd;
 	if (ft_isset(EOF, buffer))
 		return (NULL);
