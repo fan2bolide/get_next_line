@@ -6,7 +6,7 @@
 /*   By: bajeanno <bajeanno@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 03:32:06 by bajeanno          #+#    #+#             */
-/*   Updated: 2022/11/23 17:58:10 by bajeanno         ###   ########lyon.fr   */
+/*   Updated: 2022/11/24 15:25:14 by bajeanno         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static char	*ft_add_buffer(char *buf, char *line, int *size)
 {
-	int	i;
+	size_t	i;
+	size_t	len;
 
 	i = 0;
 	while (buf[i] > 0 && buf[i] != '\n')
@@ -22,7 +23,13 @@ static char	*ft_add_buffer(char *buf, char *line, int *size)
 	if (buf[i] == '\n')
 		i++;
 	line = ft_strfusion(buf, size, line, i);
-	ft_memmove((char *)buf, buf + i, BUFFER_SIZE - i + 1);
+	len = i;
+	while (buf[len] > 0)
+		len++;
+	if (len < BUFFER_SIZE - i + 1)
+		ft_memmove((char *)buf, buf + i, len);
+	else
+		ft_memmove((char *)buf, buf + i, BUFFER_SIZE - i + 1);
 	i = BUFFER_SIZE - i;
 	while (i++ < BUFFER_SIZE)
 		buf[i] = 0;
@@ -63,9 +70,9 @@ char	*get_next_line(int fd)
 	if (old_fd != fd && old_fd != -1)
 		buffer[0] = 0;
 	old_fd = fd;
-	if (ft_isset(EOF, buffer))
-		return (NULL);
 	line = malloc(sizeof(char) * 1);
+	if (ft_isset(EOF, buffer) || !line)
+		return (NULL);
 	*line = 0;
 	size = 1;
 	if (buffer[BUFFER_SIZE] == EOF)
